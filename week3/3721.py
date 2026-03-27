@@ -74,7 +74,7 @@ class Solution:
     def longestBalanced(self, nums: List[int]) -> int:
         n = len(nums)
 
-        # next_pos[i]: nums[i] 下一次出現的位置
+        # next_pos[i] = nums[i]下一次出現的位置
         next_pos = [n] * n
         last = {}
         for i in range(n - 1, -1, -1):
@@ -82,8 +82,8 @@ class Solution:
                 next_pos[i] = last[nums[i]]
             last[nums[i]] = i
 
-        # base[r] = 當左端點 l = 0 時，
-        #           子陣列 [0..r] 的
+        # base[r] = 當左端點 = 0 時，
+        #           subarr [0..r] 的
         #           distinct odd - distinct even
         seen = set()
         cur = 0
@@ -98,12 +98,12 @@ class Solution:
         ans = 0
 
         for l in range(n):
-            # 找最右邊的 r >= l，使 balance = 0
+            # 找最右邊的 r >= l s.t. balance = 0
             r = seg.rightmost_zero_from(l)
             if r != -1:
                 ans = max(ans, r - l + 1)
 
-            # 左端點右移時，對一段 r 做區間加值
+            # 左端點往右移ㄉ時候, 對某段r整個區間加值
             if l + 1 < n:
                 delta = -1 if nums[l] & 1 else 1
                 seg.range_add(l, next_pos[l] - 1, delta)

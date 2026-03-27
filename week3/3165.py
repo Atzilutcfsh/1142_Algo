@@ -53,10 +53,8 @@ class SegmentTree:
 
     def build(self, idx: int, l: int, r: int, nums: List[int]) -> None:
         if l == r:
-            # 葉節點就只有一個數
-            # 不選它 = 0
-            # 選它 = max(nums[l], 0)
-            # 因為 empty subsequence 是 allowed 的
+            # 不選它 0
+            # 選它 max(nums[l], 0)
             val = max(nums[l], 0)
             node = self.tree[idx]
             node.s00 = 0
@@ -72,7 +70,7 @@ class SegmentTree:
 
     def update(self, idx: int, l: int, r: int, pos: int, val: int) -> None:
         if l == r:
-            # 單點更新，直接重設這格狀態
+            # 單點更新reset
             node = self.tree[idx]
             node.s00 = 0
             node.s01 = NEG_INF
@@ -99,12 +97,8 @@ class Solution:
     def maximumSumSubsequence(self, nums: List[int], queries: List[List[int]]) -> int:
         st = SegmentTree(nums)
         ans = 0
-
         for pos, x in queries:
             # 改 nums[pos] = x
             st.update(1, 0, st.n - 1, pos, x)
-
-            # 這次 update 後的 best answer 加進總和
             ans = (ans + st.query()) % MOD
-
         return ans
